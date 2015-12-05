@@ -2,6 +2,11 @@ public class BinarySearchTree
 {
   private Node root;
 
+  /**
+   * Insert a node into the tree
+   *
+   * @param node The node to insert.
+   */
   public void insertNode(final Node node)
   {
     if(root == null)
@@ -9,50 +14,43 @@ public class BinarySearchTree
       root = node;
       return;
     }
-
-    Node parentNode = findParentNodeFor(root, node);
-
-    if(node.getPayload() == parentNode.getPayload())
-    {
-      return;
-    }
-    if(node.getPayload() > parentNode.getPayload())
-    {
-      parentNode.setLeftNode(node);
-    }
-    else
-    {
-      parentNode.setRightNode(node);
-    }
+    insertNode(root, node);
   }
 
-  private Node findParentNodeFor(final Node currentNode, final Node node)
+  private void insertNode(final Node currentNode, final Node node)
   {
     if(currentNode.getPayload() == node.getPayload())
     {
-      return currentNode;
+      // Duplicates are not allowed in BSTs. Dont insert.
+      return;
     }
 
     if(node.getPayload() > currentNode.getPayload()) 
     {
+      // Try inserting into left node if possible.
       if(currentNode.getLeftNode() == null)
       {
-        return currentNode;
+        currentNode.setLeftNode(node);
+        return;
       }
       else
       {
-        return findParentNodeFor(currentNode.getLeftNode(), node);
+        // Recursive call
+        insertNode(currentNode.getLeftNode(), node);
       }
     }
     else
     {
+      // Try inserting into right node if possible.
       if(currentNode.getRightNode() == null)
       {
-        return currentNode;
+        currentNode.setRightNode(node);
+        return;
       }
       else
       {
-        return findParentNodeFor(currentNode.getRightNode(), node);
+        // Recursive call
+        insertNode(currentNode.getRightNode(), node);
       }
     }
   } 
@@ -89,5 +87,22 @@ public class BinarySearchTree
     printInOrderTraversal(node.getRightNode());
     System.out.println(node.getPayload());
     printInOrderTraversal(node.getLeftNode());
-  } 
+  }
+
+  public void postOrderTraversal()
+  {
+    printPostOrderTraversal(root);
+  }
+
+  private void printPostOrderTraversal(Node node)
+  {
+    if(node == null)
+    {
+      return;
+    }
+
+    printPostOrderTraversal(node.getRightNode());
+    printPostOrderTraversal(node.getLeftNode());
+    System.out.println(node.getPayload());
+  }
 }
