@@ -10,7 +10,6 @@ public class BSTDriver
     for(int i = 0; i < 10; i++)
     {
       int payload = rand.nextInt(100);
-      System.out.println("Inserting " + payload);
       final Node node = new Node(payload);
       bst.insertNode(node);
     }
